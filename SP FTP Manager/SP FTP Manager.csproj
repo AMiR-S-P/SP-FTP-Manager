@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <RootNamespace>SP_FTP_Manager</RootNamespace>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Icon\CreateFolder_128x128.png" />
+    <None Remove="Resources\Icon\Delete_128x128.png" />
+    <None Remove="Resources\Icon\Download_128x128.png" />
+    <None Remove="Resources\Icon\Failure_128x128.png" />
+    <None Remove="Resources\Icon\File_128x128.png" />
+    <None Remove="Resources\Icon\Folder_128x128.png" />
+    <None Remove="Resources\Icon\github.png" />
+    <None Remove="Resources\Icon\google.png" />
+    <None Remove="Resources\Icon\linkedin.png" />
+    <None Remove="Resources\Icon\Rename_128x128.png" />
+    <None Remove="Resources\Icon\Retry_128x128.png" />
+    <None Remove="Resources\Icon\SPFTPManager_128x128.png" />
+    <None Remove="Resources\Icon\Success_128x128.png" />
+    <None Remove="Resources\Icon\Upload_128x128.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="FTP\" />
+    <Folder Include="Job\" />
+    <Folder Include="Resources\Style\Light\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>..\..\..\Assemblies\System.Windows.Interactivity.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Icon\CreateFolder_128x128.png" />
+    <Resource Include="Resources\Icon\Delete_128x128.png" />
+    <Resource Include="Resources\Icon\Download_128x128.png" />
+    <Resource Include="Resources\Icon\Failure_128x128.png" />
+    <Resource Include="Resources\Icon\File_128x128.png" />
+    <Resource Include="Resources\Icon\Folder_128x128.png" />
+    <Resource Include="Resources\Icon\github.png" />
+    <Resource Include="Resources\Icon\google.png" />
+    <Resource Include="Resources\Icon\linkedin.png" />
+    <Resource Include="Resources\Icon\Rename_128x128.png" />
+    <Resource Include="Resources\Icon\Retry_128x128.png" />
+    <Resource Include="Resources\Icon\SPFTPManager_128x128.png" />
+    <Resource Include="Resources\Icon\Success_128x128.png" />
+    <Resource Include="Resources\Icon\Upload_128x128.png" />
+  </ItemGroup>
+
+</Project>

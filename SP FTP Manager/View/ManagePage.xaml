@@ -1,0 +1,285 @@
+﻿<cc:ChromeWindow xmlns:cc="clr-namespace:SP_FTP_Manager.CustomControls"
+                 x:Class="SP_FTP_Manager.View.ManagePage"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:vm="clr-namespace:SP_FTP_Manager.ViewModel"
+                 xmlns:interactivity="http://schemas.microsoft.com/expression/2010/interactivity"
+                 xmlns:local="clr-namespace:SP_FTP_Manager.View" 
+                 xmlns:converters="clr-namespace:SP_FTP_Manager.Converters"
+                 xmlns:enums="clr-namespace:SP_FTP_Manager.Enums"
+                 xmlns:data="clr-namespace:System.Data;assembly=netstandard"
+                 xmlns:mscor="clr-namespace:System;assembly=mscorlib"
+                 WindowStartupLocation="CenterScreen"
+                 mc:Ignorable="d" Style="{StaticResource windowChromeStyle}"
+                 Title="Manage" Height="600" Width="900">
+
+    <!--<cc:ChromeWindow.DataContext>
+        <vm:ManageViewModel/>
+    </cc:ChromeWindow.DataContext>-->
+
+    <interactivity:Interaction.Triggers>
+        <interactivity:EventTrigger EventName="Loaded">
+            <interactivity:InvokeCommandAction Command="{Binding RefreshCommand}"/>
+        </interactivity:EventTrigger>
+    </interactivity:Interaction.Triggers>
+
+    <cc:ChromeWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Style/Dark/MainTheme.xaml"/>
+                <ResourceDictionary Source="/Template/JobTemplate.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <converters:InvertBoolConverter x:Key="InvertBoolConverter"/>
+            <converters:MultiValuePassConverter x:Key="MultiValuePassConverter"/>
+            <converters:ByteToSizeUnitConverter x:Key="ByteToSizeUnitConverter"/>
+            
+            <CollectionViewSource Source="{Binding Jobs}" x:Key="cvs">
+            </CollectionViewSource>
+            </ResourceDictionary>
+</cc:ChromeWindow.Resources>
+
+
+    <cc:ChromeWindow.LeftToolBarButtons>
+        <Button Style="{StaticResource titleBarButtonStyle}" Content="&#xE830;" 
+                Command="{Binding BackCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=cc:ChromeWindow}}"
+                ToolTip="Back"/>
+        <Button Style="{StaticResource titleBarButtonStyle}" Content="&#xE72C;" 
+                Command="{Binding RefreshCommand}"
+                ToolTip="Refresh"/>
+    </cc:ChromeWindow.LeftToolBarButtons>
+
+    <cc:ChromeWindow.RightToolBarButtons>
+        <Button Style="{StaticResource titleBarButtonStyle}" Content="&#xE713;"
+                Command="{Binding SettingsCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=cc:ChromeWindow}}"
+                ToolTip="Settings"/>
+    </cc:ChromeWindow.RightToolBarButtons>
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" MinWidth="265" MaxWidth="400"/>
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!--colmun 0-->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Grid  Grid.Row="0">
+                <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsBusy,Converter={StaticResource InvertBoolConverter}}">
+                    <Button Content="&#xE8E5;" Width="25"
+                            Command="{Binding AddFileCommand}"
+                            CommandParameter="{Binding SelectedItem,ElementName=mapTreeView}"
+                            FontSize="13" ToolTip="Add File" 
+                            Style="{StaticResource baseToolBarButton}" 
+                            FontFamily="segoe mdl2 assets"  Height="25" HorizontalAlignment="Right" Margin="5" Padding="5"/>
+                    <Button Content="&#xED25;" Width="25" 
+                            Command="{Binding AddFolderCommand}"
+                            CommandParameter="{Binding SelectedItem,ElementName=mapTreeView}"
+                            FontSize="13" ToolTip="Add Folder" 
+                            Style="{StaticResource baseToolBarButton}" 
+                            FontFamily="segoe mdl2 assets"  Height="25" HorizontalAlignment="Right" Margin="5" Padding="5"/>
+                    <Button Content="&#xE8F4;" Width="25" 
+                            FontSize="13" ToolTip="New Folder"  
+                            Command="{Binding CreateFolderCommand}"
+                            CommandParameter="{Binding SelectedItem,ElementName=mapTreeView}"
+                            Style="{StaticResource baseToolBarButton}" 
+                            FontFamily="segoe mdl2 assets"  Height="25" HorizontalAlignment="Right" Margin="5" Padding="5"/>
+                    <Button Content="&#xE8AC;" Width="25"
+                            FontSize="13" ToolTip="Rename"        
+                            CommandParameter="{Binding SelectedItem,ElementName=mapTreeView}"
+                            Command="{Binding RenameCommand}"
+                            Style="{StaticResource baseToolBarButton}" 
+                            FontFamily="segoe mdl2 assets"  Height="25" HorizontalAlignment="Right" Margin="5" Padding="5"/>
+                    <Button Content="&#xE896;" Width="25" 
+                            Command="{Binding DownloadCommand}" 
+                            CommandParameter="{Binding SelectedItem,ElementName=mapTreeView}"
+                            FontSize="13" ToolTip="Download" 
+                            Style="{StaticResource baseToolBarButton}"  
+                            FontFamily="segoe mdl2 assets"  Height="25" HorizontalAlignment="Right" Margin="5" Padding="5"/>
+                    <Button Content="&#xE74D;" Width="25" 
+                            FontSize="13" ToolTip="Delete" 
+                            Style="{StaticResource baseToolBarButton}" 
+                            Command="{Binding DeleteCommand}"
+                            CommandParameter="{Binding SelectedItem,ElementName=mapTreeView}"
+                            FontFamily="segoe mdl2 assets" Height="25" HorizontalAlignment="Right" Margin="5" Padding="5"/>
+                </StackPanel>
+                <Button FontSize="14" FontFamily="segoe mdl2 assets" Height="25" 
+                        HorizontalAlignment="Right" Margin="5" Padding="5" ToolTip="Apply"
+                        Command="{Binding ApplyCommand}">
+                    <Button.Resources>
+                        <Style TargetType="Button" BasedOn="{StaticResource baseToolBarButton}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsApplying}" Value="True">
+                                    <Setter Property="Content" Value="&#xE711;" />
+                                    <!--<Setter Property="Command" Value="{Binding CancelCommand}" />-->
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsApplying}" Value="False">
+                                    <Setter Property="Content" Value="&#xE8FB;" />
+                                    <!--<Setter Property="Command" Value="{Binding UploadCommand}" />-->
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </Grid>
+            <TreeView x:Name="mapTreeView" Style="{StaticResource treeViewStyle}" HorizontalContentAlignment="Stretch"
+                      ItemsSource="{Binding FTP.FTPModel.Map}"  
+                      ItemTemplate="{StaticResource ftpTreeViewItem}"
+                      Grid.Row="1">
+                <interactivity:Interaction.Triggers>
+                    <interactivity:EventTrigger EventName="SelectedItemChanged">
+                        <interactivity:InvokeCommandAction Command="{Binding SetSelectedMapCommand}"
+                                                           CommandParameter="{Binding SelectedItem,ElementName=mapTreeView}"/>
+                    </interactivity:EventTrigger>
+                </interactivity:Interaction.Triggers>
+            </TreeView>
+        </Grid>
+
+        <!--gridSpliter-->
+        <GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="DarkGray"/>
+
+        <!--column 2-->
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions  >
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <GroupBox Header="Info" Style="{StaticResource groupBoxStyle}" Margin="5,10,5,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel DataContext="{Binding SelectedItem, ElementName=mapTreeView, Mode=OneWay}" >
+                        <TextBlock Text="Name:" Style="{StaticResource TextBlockStyle}" />
+                        <TextBox Text="{Binding Name}" IsReadOnly="True" Style="{StaticResource readOnlytextBoxStyle}" Margin="0,0,0,5"/>
+                        <TextBlock Text="Type:" Style="{StaticResource TextBlockStyle}"/>
+                        <TextBox Text="{Binding Type}" Style="{StaticResource readOnlytextBoxStyle}" Margin="0,0,0,5"/>
+                        <TextBlock Text="Size:" Style="{StaticResource TextBlockStyle}"/>
+                        <TextBox Text="{Binding Size,Converter={StaticResource ByteToSizeUnitConverter}}" Style="{StaticResource readOnlytextBoxStyle}" Margin="0,0,0,5"/>
+                        <TextBlock Text="Childs count:" Style="{StaticResource TextBlockStyle}"/>
+                        <TextBox Text="{Binding Children.Count,Mode=OneTime}" Style="{StaticResource readOnlytextBoxStyle}" Margin="0,0,0,5"/>
+                        <TextBlock Text="Creation Time:" Style="{StaticResource TextBlockStyle}"/>
+                        <TextBox Text="{Binding CreateTime}" Style="{StaticResource readOnlytextBoxStyle}" Margin="0,0,0,5"/>
+                        <TextBlock Text="Path:" Style="{StaticResource TextBlockStyle}"/>
+                        <TextBox Text="{Binding Path}" Style="{StaticResource readOnlytextBoxStyle}" Margin="0,0,0,5"   />
+                    </StackPanel>
+                </ScrollViewer>
+            </GroupBox>
+
+
+            <GroupBox   Header="Status" Style="{StaticResource groupBoxStyle}" Grid.Row="2" Margin="5,15,5,5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left" Margin="5">
+                        <StackPanel Orientation="Horizontal">
+                        <cc:FilterRadioButton Content="{Binding Jobs.Count}" GroupName="Filter"
+                                              Title="&#xE71D;" ToolTip="All"
+                                     Command="{Binding FilterCommand}" >
+                            <cc:FilterRadioButton.CommandParameter>
+                                <MultiBinding Converter="{StaticResource MultiValuePassConverter}">
+                                    <Binding Source="{StaticResource cvs}"/>
+                                    <Binding Source="{x:Null}" />
+                                </MultiBinding>
+                            </cc:FilterRadioButton.CommandParameter>
+                        </cc:FilterRadioButton>
+
+                            <cc:FilterRadioButton  Content="{Binding FilesToUploadCount}" GroupName="Filter"
+                                               Title="&#xE898;" ToolTip="Upload"
+                                     Command="{Binding FilterCommand}">
+                            <cc:FilterRadioButton.CommandParameter>
+                                <MultiBinding Converter="{StaticResource MultiValuePassConverter}">
+                                    <Binding Source="{StaticResource cvs}"/>
+                                    <Binding Source="{x:Static enums:JobTitle.Upload}" />
+                                </MultiBinding>
+                            </cc:FilterRadioButton.CommandParameter>
+                        </cc:FilterRadioButton>
+
+                            <cc:FilterRadioButton  Content="{Binding FilesToDownloadCount}"  GroupName="Filter"
+                                               Title="&#xE896;" ToolTip="Download"
+                                     Command="{Binding FilterCommand}" >
+                            <cc:FilterRadioButton.CommandParameter>
+                                <MultiBinding Converter="{StaticResource MultiValuePassConverter}">
+                                    <Binding Source="{StaticResource cvs}"/>
+                                    <Binding Source="{x:Static enums:JobTitle.Download}" />
+                                </MultiBinding>
+                            </cc:FilterRadioButton.CommandParameter>
+                        </cc:FilterRadioButton>
+
+                            <cc:FilterRadioButton  Content="{Binding FoldersToCreateCount}"  GroupName="Filter"
+                                               Title="&#xE8F4;" ToolTip="Create Folder"
+                                     Command="{Binding FilterCommand}">
+                            <cc:FilterRadioButton.CommandParameter>
+                                <MultiBinding Converter="{StaticResource MultiValuePassConverter}">
+                                    <Binding Source="{StaticResource cvs}"/>
+                                    <Binding Source="{x:Static enums:JobTitle.MakeDirectory}" />
+                                </MultiBinding>
+                            </cc:FilterRadioButton.CommandParameter>
+                        </cc:FilterRadioButton>
+
+                            <cc:FilterRadioButton  Content="{Binding FilesToRenameCount}"  GroupName="Filter"
+                                               Title="&#xE8ac;" ToolTip="Rename"
+                                     Command="{Binding FilterCommand}" >
+                            <cc:FilterRadioButton.CommandParameter>
+                                <MultiBinding Converter="{StaticResource MultiValuePassConverter}">
+                                    <Binding Source="{StaticResource cvs}"/>
+                                    <Binding Source="{x:Static enums:JobTitle.Rename}" />
+                                </MultiBinding>
+                            </cc:FilterRadioButton.CommandParameter>
+                        </cc:FilterRadioButton>
+
+                            <cc:FilterRadioButton  Content="{Binding FilesToDeleteCount}"  GroupName="Filter"
+                                               Title="&#xE74D;" ToolTip="Delete"
+                                     Command="{Binding FilterCommand}" >
+                            <cc:FilterRadioButton.CommandParameter>
+                                <MultiBinding Converter="{StaticResource MultiValuePassConverter}">
+                                    <Binding Source="{StaticResource cvs}"/>
+                                    <Binding Source="{x:Static enums:JobTitle.Delete}" />
+                                </MultiBinding>
+                            </cc:FilterRadioButton.CommandParameter>
+                        </cc:FilterRadioButton>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10,0">
+
+                            <cc:FilterRadioButton  Content="{Binding FailedCount}"  GroupName="Filter"
+                                               Title="&#xE783;" ToolTip="Fails"
+                                     Command="{Binding FilterStatusCommand}" >
+                                <cc:FilterRadioButton.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource MultiValuePassConverter}">
+                                        <Binding Source="{StaticResource cvs}"/>
+                                        <Binding Source="{x:Static enums:JobStatus.Failure}" />
+                                    </MultiBinding>
+                                </cc:FilterRadioButton.CommandParameter>
+                            </cc:FilterRadioButton>
+                            <cc:FilterRadioButton  Content="{Binding SuccessCount}"  GroupName="Filter"
+                                               Title="&#xE8FB;" ToolTip="Successes"
+                                     Command="{Binding FilterStatusCommand}" >
+                                <cc:FilterRadioButton.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource MultiValuePassConverter}">
+                                        <Binding Source="{StaticResource cvs}"/>
+                                        <Binding Source="{x:Static enums:JobStatus.Success}" />
+                                    </MultiBinding>
+                                </cc:FilterRadioButton.CommandParameter>
+                            </cc:FilterRadioButton>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                    <ListBox ItemTemplate="{StaticResource jobTemplate}" Grid.Row="1"
+                         ItemsSource="{Binding Source={StaticResource cvs}}" BorderThickness="0"
+                         HorizontalContentAlignment="Stretch" Background="Transparent">
+                    </ListBox>
+                </Grid>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</cc:ChromeWindow>

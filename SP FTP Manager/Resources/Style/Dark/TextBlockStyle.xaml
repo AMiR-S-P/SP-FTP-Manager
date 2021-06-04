@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:SP_FTP_Manager.Resources.Style.Dark"
+                    xmlns:colors="clr-namespace:SP_FTP_Manager.Resources">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Resources/Style/Dark/Colors.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style TargetType="TextBlock" x:Key="TextBlockStyle">
+        <Setter Property="Foreground" Value="{x:Static colors:Colors.MainForegroundBrush}" />
+        <Setter Property="Focusable" Value="False" />
+    </Style>
+    
+</ResourceDictionary>
