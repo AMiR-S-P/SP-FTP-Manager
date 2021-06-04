@@ -101,6 +101,14 @@ namespace SP_FTP_Manager.Helper
         }
         #endregion
 
+        public Settings()
+        {
+            Task.Run(async () =>
+            {
+                await ResetAsync();
+            });
+        }
+
         public async Task LoadAsync()
         {
             if (File.Exists(App.SettingsPath))
@@ -126,6 +134,10 @@ namespace SP_FTP_Manager.Helper
                         await ResetAsync();
                     }
                 }
+            }
+            else
+            {
+                await ResetAsync();
             }
         }
 

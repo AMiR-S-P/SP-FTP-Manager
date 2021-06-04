@@ -18,9 +18,9 @@ namespace SP_FTP_Manager
     {
         public static string SettingsPath = Path.Combine(Environment.CurrentDirectory, "Settings.sps");
         public static string DefaultDownloadPath = Path.Combine(Environment.CurrentDirectory, "Downloads");
-        
+
         //load settings
-        public static Settings Settings { get;  set; } = new Settings();
+        public static Settings Settings { get; set; } = new Settings();
         public App()
         {
             Task.Run(async () =>
