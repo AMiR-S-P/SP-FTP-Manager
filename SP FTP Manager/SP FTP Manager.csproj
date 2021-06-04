@@ -18,6 +18,11 @@ https://github.com/AMiR-S-P</Description>
     <ApplicationIcon>SPFTPManager_128x128.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Resources\Icon\CreateFolder_128x128.png" />
     <None Remove="Resources\Icon\Delete_128x128.png" />
