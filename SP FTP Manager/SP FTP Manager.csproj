@@ -6,6 +6,16 @@
     <RootNamespace>SP_FTP_Manager</RootNamespace>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyVersion>2.0.6.12</AssemblyVersion>
+    <FileVersion>2.0.6.12</FileVersion>
+    <Version>2.0.6.12</Version>
+    <Company>Amir Setvati Paydar</Company>
+    <PackageLicenseFile>ftp license.txt</PackageLicenseFile>
+    <Description>AmirSetvatiPaydar@Gmail.com	
+
+https://www.linkedin.com/in/amir-setvati-paydar-747657152/
+https://github.com/AMiR-S-P</Description>
+    <ApplicationIcon>SPFTPManager_128x128.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +33,10 @@
     <None Remove="Resources\Icon\SPFTPManager_128x128.png" />
     <None Remove="Resources\Icon\Success_128x128.png" />
     <None Remove="Resources\Icon\Upload_128x128.png" />
+    <None Include="C:\Users\AMiRSP\Desktop\ftp license.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
