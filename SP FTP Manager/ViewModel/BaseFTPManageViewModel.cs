@@ -61,7 +61,7 @@ namespace SP_FTP_Manager.ViewModel
         public int FailedCount
         {
             get => failedCount;
-            set { failedCount = value; OnPropertyChanged(); }
+            set { failedCount = value; OnPropertyChanged(); } 
         }
         private int successCount;
 
