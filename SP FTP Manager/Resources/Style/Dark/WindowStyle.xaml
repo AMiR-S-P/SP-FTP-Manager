@@ -49,7 +49,7 @@
                                         <GradientStop Color="#FF222222" Offset="1"/>
                                     </LinearGradientBrush>
                                 </Grid.Background>-->
-                                <ItemsControl Grid.Column="0"  
+                                <ItemsControl Grid.Column="0"
                                               ItemsSource="{Binding LeftToolBarButtons, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type cc:ChromeWindow}}}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -59,7 +59,7 @@
                                 </ItemsControl>
 
 
-                                <TextBlock Text="{TemplateBinding Title}" Grid.Column="0" Grid.ColumnSpan="4" FontSize="12" Foreground="{Binding Source={x:Static colors:Colors.MainForegroundBrush}}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto"/>
+                                <TextBlock Text="{Binding Title,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Grid.Column="0" Grid.ColumnSpan="4" FontSize="12" Foreground="{Binding Source={x:Static colors:Colors.MainForegroundBrush}}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                                 <ItemsControl Grid.Column="2" 
                                               ItemsSource="{Binding RightToolBarButtons, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type cc:ChromeWindow}}}">

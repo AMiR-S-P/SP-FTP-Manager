@@ -80,7 +80,10 @@ namespace SP_FTP_Manager.Helper
         async Task<FtpWebRequest> InitFtpWebRequest(string filePath)
         {
             FtpWebRequest ftp = (FtpWebRequest)FtpWebRequest.Create(filePath);
-            ftp.Credentials = new NetworkCredential(FTPModel.Username, PasswordCipher.Decrypt(FTPModel.Password));
+            if (!string.IsNullOrEmpty(FTPModel.Username))
+            {
+                ftp.Credentials = new NetworkCredential(FTPModel.Username, PasswordCipher.Decrypt(FTPModel.Password));
+            }
             ftp.ServicePoint.ConnectionLimit = 4;
             ftp.ConnectionGroupName = "SPFTPM";
             ftp.KeepAlive = true;

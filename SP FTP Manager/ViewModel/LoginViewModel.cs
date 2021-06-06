@@ -104,7 +104,10 @@ namespace SP_FTP_Manager.ViewModel
             try
             {
                 WebRequest webRequest = FtpWebRequest.Create(Login.Server);
-                webRequest.Credentials = new NetworkCredential(Login.Username, PasswordCipher.Decrypt(Login.Password));
+                if (!string.IsNullOrEmpty(Login.Username))
+                {
+                    webRequest.Credentials = new NetworkCredential(Login.Username, PasswordCipher.Decrypt(Login.Password));
+                }
                 webRequest.Method = WebRequestMethods.Ftp.PrintWorkingDirectory;
 
                 FtpWebResponse response = await webRequest.GetResponseAsync() as FtpWebResponse;
