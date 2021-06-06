@@ -109,23 +109,6 @@ namespace SP_FTP_Manager.ViewModel
 
         public AsyncRelayCommand<object> ApplyCommand { get; set; }
 
-        //public BaseFTPManageViewModel()
-        //{
-        //    DeleteJobCommand = new AsyncRelayCommand<JobModel>(OnDeleteJob);
-        //    RetryAllCommand = new AsyncRelayCommand<object>(OnRetryAll);
-        //    RetryAllFailedCommand = new AsyncRelayCommand<object>(OnRetryAllFailed);
-        //    RetryCommand = new AsyncRelayCommand<JobModel>(OnRetry);
-        //    ClearAllCommand = new AsyncRelayCommand<object>(OnClearAll);
-        //    ClearSuccessfulJobsCommand = new AsyncRelayCommand<object>(OnClear);
-        //    IgnoreCommand = new AsyncRelayCommand<JobModel>(OnIgnore);
-        //    CancelCurrentJobCommand = new AsyncRelayCommand<JobModel>(OnCancelCurrent, CanCancelCurrent);
-
-        //    ApplyCommand = new AsyncRelayCommand<object>(OnApply, allowMultipleExecution: true);
-
-        //    Jobs.CollectionChanged += Jobs_CollectionChanged;
-        //}
-
-
 
         public BaseFTPManageViewModel(LoginModel loginModel, bool isSendOnly)
         {
@@ -140,15 +123,7 @@ namespace SP_FTP_Manager.ViewModel
 
             ApplyCommand = new AsyncRelayCommand<object>(OnApply, allowMultipleExecution: true);
 
-            //if (LoginModel == null)
-            //{
-            //    LoginModel = new LoginModel()
-            //    {
-            //        Server = "ftp://FTPTest.somee.com/www.FTPTest.somee.com",
-            //        Username = "AmirSp",
-            //        Password = PasswordCipher.Encrypt("Paydar123")
-            //    };
-            //}
+
             LoginModel = loginModel;
             FTP = new FTP(LoginModel.Server,
                           LoginModel.Username,
