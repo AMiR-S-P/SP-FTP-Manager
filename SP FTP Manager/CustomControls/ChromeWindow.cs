@@ -62,6 +62,18 @@ namespace SP_FTP_Manager.CustomControls
 
 
 
+
+        public new string  Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Title.  This enables animation, styling, binding, etc...
+        public new static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register("Title", typeof(string), typeof(ChromeWindow), new PropertyMetadata(""));
+
+
         public AsyncRelayCommand<ChromeWindow> CloseCommand { get; set; }
         public AsyncRelayCommand<ChromeWindow> MinimizeCommand { get; set; }
         public AsyncRelayCommand<ChromeWindow> MaximizeCommand { get; set; }

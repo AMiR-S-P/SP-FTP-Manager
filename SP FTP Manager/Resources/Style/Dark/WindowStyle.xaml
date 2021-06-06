@@ -37,6 +37,8 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
+                            <TextBlock  Text="{TemplateBinding Title}"  Grid.Row="0" FontSize="12" Foreground="{x:Static colors:Colors.MainForegroundBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
                             <Grid Grid.Row="0" >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -59,9 +61,8 @@
                                 </ItemsControl>
 
 
-                                <TextBlock Text="{Binding Title,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Grid.Column="0" Grid.ColumnSpan="4" FontSize="12" Foreground="{Binding Source={x:Static colors:Colors.MainForegroundBrush}}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-                                <ItemsControl Grid.Column="2" 
+                                <ItemsControl Grid.Column="2"
                                               ItemsSource="{Binding RightToolBarButtons, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type cc:ChromeWindow}}}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
