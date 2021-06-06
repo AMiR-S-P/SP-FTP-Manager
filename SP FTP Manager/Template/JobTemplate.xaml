@@ -14,7 +14,7 @@
                  Margin="0,1" CornerRadius="2" Padding="2">
             <Border.ContextMenu>
                 <ContextMenu DataContext="{Binding PlacementTarget.Tag,RelativeSource={RelativeSource Self}}" 
-                             IsEnabled="{Binding PlacementTarget.Tag.IsApplying,Converter={StaticResource InvertBoolConverter},RelativeSource={RelativeSource Self}}">
+                             >
                     <MenuItem Header="Cancel Current" Command="{Binding CancelCurrentJobCommand}" 
                               CommandParameter="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=ContextMenu}}"/>
                     <Separator/>

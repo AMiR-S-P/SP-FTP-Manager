@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
 namespace SP_FTP_Manager.Behaviors
 {
-public    class PasswordEncryptorBehavior:Behavior<PasswordBox>
+    public class PasswordEncryptorBehavior : Behavior<PasswordBox>
     {
         protected override void OnAttached()
         {

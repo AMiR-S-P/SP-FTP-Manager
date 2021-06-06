@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SP_FTP_Manager.Helper
 {
@@ -11,12 +12,12 @@ namespace SP_FTP_Manager.Helper
     {
         public static byte[] Encrypt(string password)
         {
-            return ProtectedData.Protect(UTF8Encoding.UTF8.GetBytes(password??""), null, DataProtectionScope.CurrentUser);
+            return ProtectedData.Protect(UTF8Encoding.UTF8.GetBytes(password ?? ""), null, DataProtectionScope.CurrentUser);
         }
 
         public static string Decrypt(byte[] encrypted)
         {
-            if(encrypted==null)
+            if (encrypted == null)
             {
                 return "";
             }

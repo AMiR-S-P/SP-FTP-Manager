@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Media;
 
 namespace SP_FTP_Manager.Helper
@@ -42,7 +43,14 @@ namespace SP_FTP_Manager.Helper
 
         private string downloadPath;
 
-        public string DownloadPath { get => downloadPath; set { downloadPath = value; OnPropertyChanged(); } }
+        public string DownloadPath
+        {
+            get
+            {
+                return downloadPath;
+            }
+            set { downloadPath = value; OnPropertyChanged(); }
+        }
         #endregion
 
         #region ConnectionTab
@@ -139,8 +147,30 @@ namespace SP_FTP_Manager.Helper
             {
                 await ResetAsync();
             }
+
+            await InitDownloadPath();
         }
 
+        public async Task InitDownloadPath()
+        {
+            if (string.IsNullOrEmpty(DownloadPath))
+            {
+            MessageBox.Show("Select download path...");
+
+                if (string.IsNullOrEmpty(DownloadPath))
+                {
+                    //System.Windows.Forms.MessageBox.Show("Select download path...");
+                    System.Windows.Forms.FolderBrowserDialog folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
+                    folderBrowser.ShowNewFolderButton = true;
+
+                    if (folderBrowser.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        DownloadPath = folderBrowser.SelectedPath;
+                    }
+                }
+                await SaveAsync();
+            }
+        }
         public async Task SaveAsync()
         {
             if (!File.Exists(App.SettingsPath))
@@ -151,6 +181,18 @@ namespace SP_FTP_Manager.Helper
             using (StreamWriter sr = new StreamWriter(App.SettingsPath))
             {
                 await sr.WriteAsync(System.Text.Json.JsonSerializer.Serialize(this));
+            }
+        }
+        public void Save()
+        {
+            if (!File.Exists(App.SettingsPath))
+            {
+                File.CreateText(App.SettingsPath).Close();
+            }
+
+            using (StreamWriter sr = new StreamWriter(App.SettingsPath))
+            {
+                sr.Write(System.Text.Json.JsonSerializer.Serialize(this));
             }
         }
 
@@ -164,7 +206,7 @@ namespace SP_FTP_Manager.Helper
             Address = "";
             Port = "";
 
-            DownloadPath = App.DefaultDownloadPath;
+            DownloadPath = "";
 
             return Task.CompletedTask;
         }

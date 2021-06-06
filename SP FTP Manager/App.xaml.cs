@@ -1,4 +1,6 @@
-﻿using SP_FTP_Manager.Helper;
+﻿using Newtonsoft.Json;
+using SP_FTP_Manager.Helper;
+using SP_FTP_Manager.Model;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,26 +18,47 @@ namespace SP_FTP_Manager
     /// </summary>
     public partial class App : Application
     {
-        public static string SettingsPath = Path.Combine(Environment.CurrentDirectory, "Settings.sps");
-        public static string DefaultDownloadPath = Path.Combine(Environment.CurrentDirectory, "Downloads");
+        public static string AppDataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SP FTP Manager");
+
+        public static string SettingsPath = Path.Combine(AppDataFolder, "Settings.sps");
+        public static string DefaultDownloadPath = "";
+        public static string LoginInfoPath = Path.Combine(AppDataFolder, "LoginInfo.sps");
 
         //load settings
         public static Settings Settings { get; set; } = new Settings();
         public App()
         {
-            Task.Run(async () =>
+            DispatcherUnhandledException += App_DispatcherUnhandledException;
+
+            if (!Directory.Exists(AppDataFolder))
             {
-                await Settings.LoadAsync();
-            });
-            if (!File.Exists(SettingsPath))
-            {
-                File.CreateText(SettingsPath);
+                Directory.CreateDirectory(AppDataFolder);
             }
 
-            if (Directory.Exists(DefaultDownloadPath))
+
+            if (!File.Exists(SettingsPath))
             {
-                Directory.CreateDirectory(DefaultDownloadPath);
+                File.CreateText(SettingsPath).Close();
             }
+
+            if (!File.Exists(LoginInfoPath))
+            {
+                using (var file = File.CreateText(LoginInfoPath))
+                {
+                    file.Write(JsonConvert.SerializeObject(new LoginModel()));
+                }
+            }
+            Startup += App_Startup;
+        }
+
+        private async void App_Startup(object sender, StartupEventArgs e)
+        {
+            await Settings.LoadAsync();
+        }
+
+        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show(e.Exception.Message);
         }
     }
 }

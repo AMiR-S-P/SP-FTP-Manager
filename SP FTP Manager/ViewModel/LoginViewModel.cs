@@ -19,7 +19,6 @@ namespace SP_FTP_Manager.ViewModel
 {
     public class LoginViewModel : BaseViewModel
     {
-        string LoginInfoPath = Path.Combine(Environment.CurrentDirectory, "LoginInfo.sps");
         private LoginModel login = new LoginModel();
         private bool isLoginIn = true;
         private bool? isLoginSuccessful;
@@ -36,17 +35,21 @@ namespace SP_FTP_Manager.ViewModel
             SendOnlyCommand = new AsyncRelayCommand<ChromeWindow>(OnSendOnly);
             ManageCommand = new AsyncRelayCommand<ChromeWindow>(OnManage);
 
-            if (!File.Exists(LoginInfoPath))
+            if (!File.Exists(App.LoginInfoPath))
             {
-                File.CreateText(LoginInfoPath);
+                Login = new LoginModel();
+                using (var file = File.CreateText(App.LoginInfoPath))
+                {
+                    file.Write(JsonConvert.SerializeObject(Login));
+                }
             }
             else
             {
                 try
                 {
-                    using (var file = File.OpenText(LoginInfoPath))
+                    using (var file = File.OpenText(App.LoginInfoPath))
                     {
-                        Login = JsonConvert.DeserializeObject<LoginModel>(file.ReadToEnd());
+                        Login = JsonConvert.DeserializeObject<LoginModel>(file.ReadToEnd())??new LoginModel();
                     }
                 }
                 catch (Exception ex)
@@ -111,14 +114,14 @@ namespace SP_FTP_Manager.ViewModel
                 {
                     if (Login.Remember == true)
                     {
-                        using (var file = new StreamWriter(LoginInfoPath))
+                        using (var file = new StreamWriter(App.LoginInfoPath))
                         {
                             file.WriteLine(JsonConvert.SerializeObject(Login));
                         }
                     }
                     else
                     {
-                        File.Delete(LoginInfoPath);
+                        File.Delete(App.LoginInfoPath);
                     }
                     return true;
                 }

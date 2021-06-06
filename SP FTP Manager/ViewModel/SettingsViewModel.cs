@@ -20,12 +20,12 @@ namespace SP_FTP_Manager.ViewModel
     public class SettingsViewModel : BaseViewModel
     {
 
-        private Settings settings = new Settings();
+        //private Settings settings = new Settings();
 
         public Settings Settings
         {
-            get { return settings; }
-            set { settings = value; OnPropertyChanged(); }
+            get { return App.Settings; }
+            //set { settings = value; OnPropertyChanged(); }
         }
 
 
@@ -139,7 +139,7 @@ namespace SP_FTP_Manager.ViewModel
 
         private async Task OnLoadSettings(object arg)
         {
-            await Settings.LoadAsync();
+            //await Settings.LoadAsync();
             App.Current.Resources["BaseBackgroundColor"] =new SolidColorBrush( Colors.Yellow);
         }
 

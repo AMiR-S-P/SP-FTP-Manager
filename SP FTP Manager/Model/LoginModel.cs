@@ -10,7 +10,7 @@ namespace SP_FTP_Manager.Model
     public class LoginModel : BaseModel
     {
         private bool remember;
-        private byte[] password;
+        private byte[] password=new byte[] { };
         private string username;
         private string server;
 

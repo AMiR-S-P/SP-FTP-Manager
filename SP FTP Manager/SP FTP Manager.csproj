@@ -16,6 +16,7 @@
 https://www.linkedin.com/in/amir-setvati-paydar-747657152/
 https://github.com/AMiR-S-P</Description>
     <ApplicationIcon>SPFTPManager_128x128.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

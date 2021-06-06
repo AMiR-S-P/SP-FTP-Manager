@@ -26,7 +26,7 @@ namespace SP_FTP_Manager.ViewModel
         //    get { return ftpModel; }
         //    set { ftpModel = value; OnPropertyChanged(); }
         //}
-        public ObservableCollection<JobModel> AllJobs { get => allJobs; private set { allJobs = value;OnPropertyChanged(); } }
+        public ObservableCollection<JobModel> AllJobs { get => allJobs; private set { allJobs = value; OnPropertyChanged(); } }
 
         private FTPMapModel selectedMap;
         private ObservableCollection<JobModel> allJobs;
@@ -104,7 +104,7 @@ namespace SP_FTP_Manager.ViewModel
 
                         break;
                     }
-           
+
             }
             return Task.CompletedTask;
         }
@@ -113,7 +113,7 @@ namespace SP_FTP_Manager.ViewModel
         {
             var values = arg as object[];
             ListCollectionView collection = values[0] as ListCollectionView;
-            if(values[1]==null)
+            if (values[1] == null)
             {
                 collection.Filter = null;
                 return Task.CompletedTask;
@@ -201,22 +201,24 @@ namespace SP_FTP_Manager.ViewModel
             return Task.CompletedTask;
         }
 
-        private Task OnDownload(FTPMapModel arg)
+        private async Task OnDownload(FTPMapModel arg)
         {
+            while (string.IsNullOrEmpty(App.Settings.DownloadPath))
+            {
+                await App.Settings.InitDownloadPath();
+            }
+
             Jobs.Add(new JobModel()
             {
                 Type = arg.Type,
                 Title = Enums.JobTitle.Download,
                 Name = arg.Name,
                 FtpAddress = arg.Path,
-                LocalAddress = App.DefaultDownloadPath,
+                LocalAddress = App.Settings.DownloadPath,
                 Status = Enums.JobStatus.Pending,
-                Size = arg.Size??0,
+                Size = arg.Size ?? 0,
                 FtpMap = arg
             });
-
-            return Task.CompletedTask;
-
         }
 
         private Task OnRename(FTPMapModel arg)

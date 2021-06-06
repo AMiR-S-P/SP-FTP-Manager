@@ -129,13 +129,13 @@ namespace SP_FTP_Manager.ViewModel
 
         public BaseFTPManageViewModel(LoginModel loginModel, bool isSendOnly)
         {
-            DeleteJobCommand = new AsyncRelayCommand<JobModel>(OnDeleteJob);
-            RetryAllCommand = new AsyncRelayCommand<object>(OnRetryAll);
-            RetryAllFailedCommand = new AsyncRelayCommand<object>(OnRetryAllFailed);
-            RetryCommand = new AsyncRelayCommand<JobModel>(OnRetry);
-            ClearAllCommand = new AsyncRelayCommand<object>(OnClearAll);
-            ClearSuccessfulJobsCommand = new AsyncRelayCommand<object>(OnClearAllSuccesses);
-            IgnoreCommand = new AsyncRelayCommand<JobModel>(OnIgnore);
+            DeleteJobCommand = new AsyncRelayCommand<JobModel>(OnDeleteJob,CanExecute);
+            RetryAllCommand = new AsyncRelayCommand<object>(OnRetryAll, CanExecute);
+            RetryAllFailedCommand = new AsyncRelayCommand<object>(OnRetryAllFailed, CanExecute);
+            RetryCommand = new AsyncRelayCommand<JobModel>(OnRetry, CanExecute);
+            ClearAllCommand = new AsyncRelayCommand<object>(OnClearAll, CanExecute);
+            ClearSuccessfulJobsCommand = new AsyncRelayCommand<object>(OnClearAllSuccesses, CanExecute);
+            IgnoreCommand = new AsyncRelayCommand<JobModel>(OnIgnore, CanExecute);
             CancelCurrentJobCommand = new AsyncRelayCommand<JobModel>(OnCancelCurrent, CanCancelCurrent);
 
             ApplyCommand = new AsyncRelayCommand<object>(OnApply, allowMultipleExecution: true);
@@ -156,6 +156,12 @@ namespace SP_FTP_Manager.ViewModel
                           isSendOnly);
             Jobs.CollectionChanged += Jobs_CollectionChanged;
         }
+
+        private bool CanExecute(object arg)
+        {
+            return !IsApplying;
+        }
+
         private void Jobs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null && e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
@@ -239,6 +245,8 @@ namespace SP_FTP_Manager.ViewModel
         {
             await JobHandler?.CancelJob();
             AllJobsCancellationTokenSource.Cancel();
+            AllJobsCancellationTokenSource = new CancellationTokenSource();
+            JobCancellationTokenSource = new CancellationTokenSource();
             IsApplying = false;
         }
 
@@ -248,7 +256,7 @@ namespace SP_FTP_Manager.ViewModel
             if (IsApplying)
             {
                 await Cancel();
-                return;
+                //return;
             }
 
             IsApplying = true;
@@ -257,8 +265,8 @@ namespace SP_FTP_Manager.ViewModel
                 if (AllJobsCancellationTokenSource.IsCancellationRequested)
                 {
                     Message = "Canceled!";
-                    AllJobsCancellationTokenSource = new CancellationTokenSource();
-                    JobCancellationTokenSource = new CancellationTokenSource();
+
+                    IsApplying = false;
                     return;
                 }
                 JobHandler.CurrentJob = j;
